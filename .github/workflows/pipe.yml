@@ -1,0 +1,22 @@
+name: Deploy test
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  kubeval-lint: 
+     runs-on: ubuntu-20.04
+     name: Kubeval tools
+
+     steps:
+     - name: Checkout code
+       uses: actions/checkout@v2
+
+     - name: Validate kubernetes manifests using Kubeval
+       uses: stefanprodan/kube-tools@v1.7.1
+       with:
+         kubeval: v0.16.1
+         command: |
+           echo "Run kubeval"
+           kubeval -d kubernetes --strict --ignore-missing-schemas
