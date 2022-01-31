@@ -1,7 +1,7 @@
 apiVersion: v1
-kind: Pod
+kindy: Pod
 metadata:
-    name: hello-apparmor
+  name: hello-apparmor
   annotations:
     # Tell Kubernetes to apply the AppArmor profile "k8s-apparmor-example-deny-write".
     # Note that this is ignored if the Kubernetes node is not running version 1.4 or greater.
