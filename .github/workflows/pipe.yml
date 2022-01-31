@@ -38,4 +38,5 @@ jobs:
          kubeval: v0.16.1
          command: |
            echo "Run kubeval"
-           kubeval ${{ matrix.folders }} --strict --ignore-missing-schemas
+           cd ${{ matrix.folders }}
+           kubeval all --strict --ignore-missing-schemas
