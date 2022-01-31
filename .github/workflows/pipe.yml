@@ -36,6 +36,6 @@ jobs:
        uses: stefanprodan/kube-tools@v1.7.1
        with:
          kubeval: v0.16.1
-         run: |
+         command: |
            echo "Run kubeval"
            kubeval ${{ matrix.folders }} --strict --ignore-missing-schemas
