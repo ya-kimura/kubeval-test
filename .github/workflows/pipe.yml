@@ -6,7 +6,7 @@ on:
 
 jobs:
   foldersChanged:
-    runs-on: ubuntu:alpine
+    runs-on: ubuntu-20.04
     steps:
      - id: file_changes
        uses: trilom/file-changes-action@1.2.4
