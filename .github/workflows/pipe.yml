@@ -42,7 +42,7 @@ jobs:
          command: |
            echo "Run kubeval"
            cd ${{ matrix.folders }}
-           kubeval all --strict --ignore-missing-schemas
+           kubeval all --strict 
   commitLint:
     runs-on: ubuntu-20.04
     needs: [kubeval-lint]
