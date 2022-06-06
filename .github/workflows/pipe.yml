@@ -41,3 +41,16 @@ jobs:
            echo "Run kubeval"
            cd ${{ matrix.folders }}
            kubeval all --strict --ignore-missing-schemas
+  commitLint:
+    runs-on: ubuntu-20.04
+    needs: [kubeval-lint]
+    if: |
+      always() &&
+      !contains(needs.*.result, 'failure') &&
+      !contains(needs.*.result, 'cancelled')
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: wagoid/commitlint-github-action@v4
