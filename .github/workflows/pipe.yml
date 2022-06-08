@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - "main"
+  pull_request:
+    branches:
+      - "main"
 
 jobs:
   foldersChanged:
@@ -19,24 +22,17 @@ jobs:
     outputs:
       folders: ${{ steps.folders.outputs.folders }}
 
-  kubeval-lint: 
-     runs-on: ubuntu-20.04
-     needs: foldersChanged
-     name: Kubeval tools
-     if: ${{ needs.foldersChanged.outputs.folders != '[]' && needs.foldersChanged.outputs.folders != '' }}
-     strategy:
+  commitLint:
+    runs-on: ubuntu-20.04
+    needs: foldersChanged
+    name: Lint PR
+    if: ${{ needs.foldersChanged.outputs.folders != '[]' && needs.foldersChanged.outputs.folders != '' }}
+    strategy:
        matrix:
          folder: ${{ fromJson(needs.foldersChanged.outputs.folders) }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-     steps:
-     - name: Checkout code
-       uses: actions/checkout@v2
-
-     - name: Validate kubernetes manifests using Kubeval
-       uses: stefanprodan/kube-tools@v1.7.1
-       with:
-         kubeval: v0.16.1
-         command: |
-           echo "Run kubeval"
-           cd ${{ matrix.folders }}
-           kubeval all --strict --ignore-missing-schemas
+      - uses: wagoid/commitlint-github-action@v4
