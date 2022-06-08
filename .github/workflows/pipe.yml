@@ -1,38 +1,11 @@
-name: Deploy test
-on:
-  push:
-    branches:
-      - "main"
-  pull_request:
-    branches:
-      - "main"
+name: Lint Commit Messages
+on: [pull_request]
 
 jobs:
-  foldersChanged:
+  commitlint:
     runs-on: ubuntu-20.04
-    steps:
-     - id: file_changes
-       uses: trilom/file-changes-action@1.2.4
-
-     - name: Get folders
-       id: folders
-       run: |
-        content=$(jq ".[]" $HOME/files.json | grep ".yaml" | sed 's/\/[^/]*$/\//' |  sed -e 's/^"//' -e 's/"$//' | grep -v '\..*' | uniq | jq -R -s -c 'split("\n")[:-1]')
-        echo "::set-output name=folders::$content"
-    outputs:
-      folders: ${{ steps.folders.outputs.folders }}
-
-  commitLint:
-    runs-on: ubuntu-20.04
-    needs: foldersChanged
-    name: Lint PR
-    if: ${{ needs.foldersChanged.outputs.folders != '[]' && needs.foldersChanged.outputs.folders != '' }}
-    strategy:
-       matrix:
-         folder: ${{ fromJson(needs.foldersChanged.outputs.folders) }}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
       - uses: wagoid/commitlint-github-action@v4

@@ -2,4 +2,4 @@
 
 ### teste lint pr 2 - commitlint
 
-# Teste PR workflow
+# Teste PR workflow 2
